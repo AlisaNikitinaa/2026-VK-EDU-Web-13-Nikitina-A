@@ -1,0 +1,410 @@
+/* Общие сбросы */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Times New Roman', serif;
+    background: #f0f0f0;
+    padding: 8px 20px;
+}
+
+/* Шапка */
+.header {
+    background: white;
+    border: 2px solid black;
+    padding: 20px;
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Верхняя строка (лого, поиск, user-section) */
+.header-top {
+    display: flex;
+    align-items: center;     /* всё по вертикали по центру */
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;         /* на случай узкого экрана */
+}
+
+/* Логотип */
+.logo {
+    font-size: 55px;
+    font-weight: bold;
+    margin: 0;
+    white-space: nowrap; 
+    margin-right: 50px;
+    margin-left: 1px;
+}
+
+/* Поиск */
+.search-section {
+    flex: 1;                 /* занимает доступное место */
+    min-width: 200px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 2px solid black;
+    font-family: inherit;
+    font-size: 16px;
+    background: white;
+}
+
+.search-input::placeholder {
+    color: #666;
+}
+
+.search-input:focus {
+    outline: none;
+    background: #f0f0f0;
+}
+
+/* Секция пользователя (кнопка + аватар + имя + ссылки) */
+.user-section {
+    display: grid;
+    grid-template-columns: auto auto 1fr;  /* три колонки */
+    align-items: start;                    /* прижимаем к верху */
+    gap: 8px;                             /* отступ между колонками */
+}
+
+/* Кнопка ASK! — первая колонка */
+.ask-btn {
+    grid-column: 1;
+    background: green;
+    border: 2px solid black;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 8px 20px;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+    margin-top: 30px;
+    color: white;
+}
+
+.ask-btn:hover {
+    background: black;
+    color: white;
+}
+
+/* Блок с аватаром и именем — вторая колонка, первая строка */
+.user-info {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 5px;
+
+}
+
+/* Аватар */
+.avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid black;
+    flex-shrink: 0;
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Имя пользователя */
+.username {
+    font-size: 18px;
+    font-weight: bold;
+    white-space: nowrap;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+/* Ссылки Settings и Log out — вторая колонка, вторая строка */
+.user-links {
+    grid-column: 2;
+    grid-row: 2;
+    display: flex;
+    gap: 10px;
+    margin-top: 2px;
+    margin-left: 10px;
+    font-size: 10px;
+}
+
+.settings, .login-link {
+    color: #666;
+    text-decoration: none;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.settings:hover, .login-link:hover {
+    color: black;
+    text-decoration: underline;
+}
+
+.separator {
+    color: #999;
+}
+
+.header .container {
+    padding-left: 0;          /* прижимает логотип к левому краю */
+}
+
+
+/* Основная часть страницы */
+.main-content {
+    margin-top: 30px; /* отступ от шапки */
+}
+
+/* Двухколоночная сетка: слева контент, справа сайдбар */
+.content-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 300px; /* левая колонка занимает всё свободное место, правая фиксирована 300px */
+    gap: 30px;
+}
+
+/* Карточка вопроса */
+.question-card {
+    background: white;
+    border: 2px solid black;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
+}
+
+/* Заголовок вопроса с аватаром */
+.question-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+/* Маленький аватар для вопросов (переопределяем размер) */
+.avatar.small {
+    width: 56px;
+    height: 56px;
+    border: 2px solid black;
+}
+
+/* Заголовок вопроса */
+.question-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Текст вопроса */
+.question-text {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+/* Мета-информация (лайки, ответы, теги) */
+.question-meta {
+    display: flex;
+    gap: 20px;
+    font-size: 14px;
+    color: #666;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+}
+
+.likes, .answers, .tags {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.tags {
+    color: #007bff;
+}
+
+/* Пагинация */
+.pagination {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+    justify-content: center;
+}
+
+.page {
+    display: inline-block;
+    padding: 8px 12px;
+    border: 2px solid black;
+    background: white;
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.page:hover {
+    background: black;
+    color: white;
+}
+
+.page.active {
+    background: black;
+    color: white;
+    pointer-events: none; /* чтобы нельзя было кликнуть на текущую страницу */
+}
+
+.dots {
+    padding: 8px 0;
+    font-weight: bold;
+}
+
+/* Сайдбар */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* Блоки в сайдбаре */
+.popular-tags, .best-members {
+    background: white;
+    border: 2px solid black;
+    padding: 20px;
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
+}
+
+/* Заголовки в сайдбаре */
+.popular-tags h3, .best-members h3 {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    border-bottom: 2px solid black;
+    padding-bottom: 5px;
+}
+
+/* Облако тегов */
+.tags-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tags-cloud a {
+    background: #f0f0f0;
+    border: 1px solid black;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: black;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.tags-cloud a:hover {
+    background: black;
+    color: white;
+}
+
+/* Список лучших участников */
+.members-list {
+    list-style: none;
+    padding: 0;
+}
+
+.members-list li {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #ccc;
+}
+
+.members-list li:last-child {
+    border-bottom: none;
+}
+
+.members-list a {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 16px;
+}
+
+.members-list a:hover {
+    text-decoration: underline;
+}
+
+/* Адаптивность: на узких экранах сайдбар уходит вниз */
+@media (max-width: 768px) {
+    .content-wrapper {
+        grid-template-columns: 1fr; /* одна колонка */
+    }
+}
+
+.likes-counter {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.like-up, .like-down {
+    background: none;
+    border: 1px solid black;
+    font-size: 14px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+}
+
+.like-up:hover, .like-down:hover {
+    background: black;
+    color: white;
+}
+
+.likes-count {
+    min-width: 30px;
+    text-align: center;
+    font-weight: bold;
+}
+
+
+
+/* Подвал */
+.page-footer {
+    margin-top: 40px;
+    padding: 20px 0;
+    border-top: 2px solid black;
+    text-align: center;
+}
+
+.page-footer .pagination {
+    justify-content: center;
+    margin-top: 0;
+}
+
+.current-tag {
+    background: #f8f9fa;
+    padding: 12px 20px;
+    border-bottom: 1px solid #e9ecef;
+    font-size: 16px;
+    color: #495057;
+}
+
+.tag-label {
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.tag-value {
+    color: #007bff;
+    font-weight: 500;
+}

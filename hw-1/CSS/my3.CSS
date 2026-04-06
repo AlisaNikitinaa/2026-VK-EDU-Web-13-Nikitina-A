@@ -1,0 +1,453 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Times New Roman', serif;
+    background: #f0f0f0;
+    padding: 8px 20px;
+}
+
+/* Шапка */
+.header {
+    background: white;
+    border: 2px solid black;
+    padding: 20px;
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Верхняя строка (лого, поиск, user-section) */
+.header-top {
+    display: flex;
+    align-items: center;     /* всё по вертикали по центру */
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;         /* на случай узкого экрана */
+}
+
+/* Логотип */
+.logo {
+    font-size: 55px;
+    font-weight: bold;
+    margin: 0;
+    white-space: nowrap; 
+    margin-right: 50px;
+    margin-left: 1px;
+}
+
+/* Поиск */
+.search-section {
+    flex: 1;                 /* занимает доступное место */
+    min-width: 200px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 2px solid black;
+    font-family: inherit;
+    font-size: 16px;
+    background: white;
+}
+
+.search-input::placeholder {
+    color: #666;
+}
+
+.search-input:focus {
+    outline: none;
+    background: #f0f0f0;
+}
+
+/* Секция пользователя (кнопка + аватар + имя + ссылки) */
+.user-section {
+    display: grid;
+    grid-template-columns: auto auto 1fr;  /* три колонки */
+    align-items: start;                    /* прижимаем к верху */
+    gap: 8px;                             /* отступ между колонками */
+}
+
+/* Кнопка ASK! — первая колонка */
+.ask-btn {
+    grid-column: 1;
+    background: green;
+    border: 2px solid black;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 8px 20px;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+    margin-top: 30px;
+    color: white;
+}
+
+.ask-btn:hover {
+    background: black;
+    color: white;
+}
+
+/* Блок с аватаром и именем — вторая колонка, первая строка */
+.user-info {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 5px;
+
+}
+
+/* Аватар */
+.avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid black;
+    flex-shrink: 0;
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Имя пользователя */
+.username {
+    font-size: 18px;
+    font-weight: bold;
+    white-space: nowrap;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+/* Ссылки Settings и Log out — вторая колонка, вторая строка */
+.user-links {
+    grid-column: 2;
+    grid-row: 2;
+    display: flex;
+    gap: 10px;
+    margin-top: 2px;
+    margin-left: 10px;
+    font-size: 10px;
+}
+
+.settings, .login-link {
+    color: #666;
+    text-decoration: none;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.settings:hover, .login-link:hover {
+    color: black;
+    text-decoration: underline;
+}
+
+.separator {
+    color: #999;
+}
+
+.header .container {
+    padding-left: 0;          /* прижимает логотип к левому краю */
+}
+
+
+/* === Стили для страницы вопроса === */
+.question-card {
+    background: white;
+    border: 2px solid black;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
+}
+
+.question-title {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    border-bottom: 2px solid black;
+    padding-bottom: 8px;
+}
+
+.question-meta {
+    display: flex;
+    gap: 20px;
+    font-size: 14px;
+    color: #444;
+    margin-bottom: 20px;
+}
+
+.question-text {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.tag-list {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.tag {
+    background: #f0f0f0;
+    border: 1px solid black;
+    padding: 4px 12px;
+    text-decoration: none;
+    color: black;
+    font-size: 13px;
+    transition: 0.2s;
+}
+
+.tag:hover {
+    background: black;
+    color: white;
+}
+
+.answers-section {
+    margin-top: 20px;
+}
+
+.answers-title {
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    border-bottom: 2px solid black;
+    padding-bottom: 5px;
+}
+
+.answer-item {
+    background: white;
+    border: 2px solid black;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
+}
+
+.answer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.answer-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.small-avatar {
+    width: 56px;
+    height: 56px;
+    background: #f0f0f0;
+    border: 1px solid black;
+    border-radius: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.author-name {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.answer-date {
+    font-size: 12px;
+    color: #666;
+}
+
+.answer-text {
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 16px;
+}
+
+.correct-check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed #ccc;
+}
+
+.correct-check input {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.correct-check label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #2c5e2e;
+    cursor: pointer;
+}
+
+/* Форма ответа */
+.answer-form-card {
+    background: white;
+    border: 2px solid black;
+    padding: 20px;
+    margin-top: 30px;
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
+}
+
+.answer-form-card h3 {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    border-bottom: 2px solid black;
+    padding-bottom: 5px;
+}
+
+.answer-textarea {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid black;
+    font-family: inherit;
+    font-size: 16px;
+    resize: vertical;
+    min-height: 120px;
+    background: white;
+}
+
+.answer-textarea:focus {
+    outline: none;
+    background: #f9f9f9;
+}
+
+.post-answer-btn {
+    background: green;
+    border: 2px solid black;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 8px 24px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: 0.2s;
+}
+
+.post-answer-btn:hover {
+    background: black;
+    color: white;
+}
+
+/* Убедимся, что сайдбар соответствует остальному дизайну */
+.popular-tags, .best-members {
+    margin-bottom: 30px;
+}
+
+.popular-tags h3, .best-members h3 {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    border-bottom: 2px solid black;
+    padding-bottom: 5px;
+}
+
+/* === Сетка для main === */
+.main-container {
+    margin-top: 30px;
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 30px;
+}
+
+/* Основная колонка */
+.main-content {
+    min-width: 0; /* предотвращает переполнение */
+}
+
+/* Сайдбар и его карточки */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.popular-tags, .best-members {
+    background: white;
+    border: 2px solid black;
+    padding: 20px;
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
+}
+
+.popular-tags h3, .best-members h3 {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    border-bottom: 2px solid black;
+    padding-bottom: 5px;
+}
+
+.tags-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tags-cloud a {
+    background: #f0f0f0;
+    border: 1px solid black;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: black;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.tags-cloud a:hover {
+    background: black;
+    color: white;
+}
+
+.members-list {
+    list-style: none;
+    padding: 0;
+}
+
+.members-list li {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #ccc;
+}
+
+.members-list li:last-child {
+    border-bottom: none;
+}
+
+.members-list a {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 16px;
+}
+
+.members-list a:hover {
+    text-decoration: underline;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .content-wrapper {
+        grid-template-columns: 1fr;
+    }
+}
