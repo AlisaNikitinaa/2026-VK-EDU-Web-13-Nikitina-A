@@ -1,0 +1,23 @@
+{% load static %}
+<article class="question-card">
+                                <div class="question-header">
+                                    <div class="avatar small">
+                                        <img src="{% static 'img/ask2.jpg' %}" alt="avatar">
+                                    </div>
+                                    <h2 class="question-title">
+                                        <a href="{% url 'one_question' question.id %}">{{ question.title }}</a>
+                                    </h2>
+                                </div>
+                                <p class="question-text">{{ question.text }}</p>
+                                <div class="question-meta">
+                                    <div class="likes-counter">
+                                        <button class="like-up">▲</button>
+                                        <span class="likes-count">5</span>
+                                        <button class="like-down">▼</button>
+                                    </div>
+                                    <span class="answers">
+                                        <a href="#">answer (3)</a>
+                                    </span>
+                                    <span class="tags">Tags: <a href="#">black-jack</a> <a href="#">bender</a></span>
+                                </div>
+                            </article>

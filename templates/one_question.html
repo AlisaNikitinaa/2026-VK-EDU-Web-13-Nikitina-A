@@ -1,0 +1,10 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}Список вопросов | AskPupkin{% endblock %}
+
+{% block content %}
+                    <div class="question-list">
+                            {% include 'layouts/question.html' %}
+                    </div>
+{% endblock %}

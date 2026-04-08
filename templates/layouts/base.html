@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}AskPupkin{% endblock %}</title>
+    <meta name="author" content="2026-VK-EDU-Web-13-Nikitina-A">
+    <link rel="stylesheet" href="{% static 'css/my.css' %}">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-top">
+                <h1 class="logo">AskPupkin</h1>
+                <div class="search-section">
+                    <input type="text" class="search-input" placeholder="🔍Search">
+                </div>
+                <div class="user-section">
+                    <button class="ask-btn">ASK!</button>
+                    <div class="user-info">
+                <div class="avatar"><img src="{% static 'img/ask1.jpg' %}" alt="Avatar"></div>
+                <span class="username"><a href="#">Dr. Pepper</a></span>
+            </div>
+            <div class="user-links">
+                <a href="#" class="settings">Settings</a>
+                <span class="separator">|</span>
+                <a href="#" class="login-link">Log out</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="main-content">
+    <div class="container">
+        <div class="content-wrapper">
+            {% block content %}
+            <!-- Сюда будет вставляться контент конкретных страниц -->
+            {% endblock %}
+
+            <aside class="sidebar">
+                {% block sidebar %}
+                <section class="popular-tags">
+                    <h3>Popular Tags</h3>
+            <div class="tags-cloud">
+                <a href="#">perl</a>
+                <a href="#">python</a>
+                <a href="#">TechnoPark</a>
+                <a href="#">MySQL</a>
+                <a href="#">django</a>
+                <a href="#">Mail.Ru</a>
+                <a href="#">Voloshin</a>
+                <a href="#">Firefox</a>
+            </div>
+        </section>
+
+        <section class="best-members">
+            <h3>Best Members</h3>
+            <ul class="members-list">
+                <li><a href="#">Mr. Freeman</a></li>
+                <li><a href="#">Dr. House</a></li>
+                <li><a href="#">Bender</a></li>
+                <li><a href="#">Queen Victoria</a></li>
+                <li><a href="#">V.Pupkin</a></li>
+            </ul>
+        </section>
+                {% endblock %}
+            </aside>
+        </div>
+    </div>
+</main>
+</body>
+</html>
