@@ -1,0 +1,35 @@
+# Виртуальное окружение
+venv/
+env/
+.venv/
+
+# Байт‑код Python
+__pycache__/
+*.py[cod]
+*.so
+
+# Файлы IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Логи
+*.log
+
+# База данных
+db.sqlite3
+*.db
+
+# Файлы окружения
+.env
+.env.local
+
+# Дистрибутивы
+dist/
+build/
+*.egg-info/
+
+# Покрытие кода
+.coverage
+htmlcov/
