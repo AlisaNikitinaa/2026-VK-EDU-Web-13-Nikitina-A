@@ -7,67 +7,76 @@
     <title>{% block title %}AskPupkin{% endblock %}</title>
     <meta name="author" content="2026-VK-EDU-Web-13-Nikitina-A">
     <link rel="stylesheet" href="{% static 'css/my.css' %}">
+    <link rel="icon" href="{% static 'img/ask3.jpg' %}">
 </head>
 <body>
     <header class="header">
         <div class="container">
             <div class="header-top">
-                <h1 class="logo">AskPupkin</h1>
+                <h1 class="logo"><a href="{% url 'index' %}">AskPupkin</a></h1>
                 <div class="search-section">
                     <input type="text" class="search-input" placeholder="🔍Search">
                 </div>
                 <div class="user-section">
-                    <button class="ask-btn">ASK!</button>
+                    <a href="{% url 'ask_form' %}">
+                        <button class="ask-btn">ASK!</button>
+                    </a>
                     <div class="user-info">
-                <div class="avatar"><img src="{% static 'img/ask1.jpg' %}" alt="Avatar"></div>
-                <span class="username"><a href="#">Dr. Pepper</a></span>
-            </div>
-            <div class="user-links">
-                <a href="#" class="settings">Settings</a>
-                <span class="separator">|</span>
-                <a href="#" class="login-link">Log out</a>
+                        <div class="avatar"><img src="{% static 'img/ask1.jpg' %}" alt="Avatar"></div>
+                        <span class="username"><a href="{% url 'profile' %}">Dr. Pepper</a></span>
+                    </div>
+                    <div class="user-links">
+                        <a href="{% url 'profile' %}" class="settings">Settings</a>
+                        <span class="separator">|</span>
+                        <a href="{% url 'authorization' %}" class="login-link">Log out</a>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</header>
+    </header>
 
-<main class="main-content">
-    <div class="container">
-        <div class="content-wrapper">
-            {% block content %}
-            <!-- Сюда будет вставляться контент конкретных страниц -->
+    <main class="main-content">
+        <div class="container">
+            <!-- НОВЫЙ БЛОК для заголовков вопросов -->
+            {% block questions_header %}
+            <!-- По умолчанию пусто, будет переопределен только на нужных страницах -->
             {% endblock %}
 
-            <aside class="sidebar">
-                {% block sidebar %}
-                <section class="popular-tags">
-                    <h3>Popular Tags</h3>
-            <div class="tags-cloud">
-                <a href="#">perl</a>
-                <a href="#">python</a>
-                <a href="#">TechnoPark</a>
-                <a href="#">MySQL</a>
-                <a href="#">django</a>
-                <a href="#">Mail.Ru</a>
-                <a href="#">Voloshin</a>
-                <a href="#">Firefox</a>
-            </div>
-        </section>
-
-        <section class="best-members">
-            <h3>Best Members</h3>
-            <ul class="members-list">
-                <li><a href="#">Mr. Freeman</a></li>
-                <li><a href="#">Dr. House</a></li>
-                <li><a href="#">Bender</a></li>
-                <li><a href="#">Queen Victoria</a></li>
-                <li><a href="#">V.Pupkin</a></li>
-            </ul>
-        </section>
+            <div class="content-wrapper">
+                {% block content %}
+                <!-- Сюда будет вставляться контент конкретных страниц -->
                 {% endblock %}
-            </aside>
+
+                <aside class="sidebar">
+                    {% block sidebar %}
+                    <section class="popular-tags">
+                        <h3>Popular Tags</h3>
+                        <div class="tags-cloud">
+                            <a href="{% url 'tag' tag_name='perl' %}">perl</a>
+                            <a href="{% url 'tag' tag_name='python' %}">python</a>
+                            <a href="{% url 'tag' tag_name='TechnoPark' %}">TechnoPark</a>
+                            <a href="{% url 'tag' tag_name='MySQL' %}">MySQL</a>
+                            <a href="{% url 'tag' tag_name='django' %}">django</a>
+                            <a href="{% url 'tag' tag_name='Mail.Ru' %}">Mail.Ru</a>
+                            <a href="{% url 'tag' tag_name='Voloshin' %}">Voloshin</a>
+                            <a href="{% url 'tag' tag_name='Firefox' %}">Firefox</a>
+                        </div>
+                    </section>
+
+                    <section class="best-members">
+                        <h3>Best Members</h3>
+                        <ul class="members-list">
+                            <li><a href="#">Mr. Freeman</a></li>
+                            <li><a href="#">Dr. House</a></li>
+                            <li><a href="#">Bender</a></li>
+                            <li><a href="#">Queen Victoria</a></li>
+                            <li><a href="#">V.Pupkin</a></li>
+                        </ul>
+                    </section>
+                    {% endblock %}
+                </aside>
+            </div>
         </div>
-    </div>
-</main>
+    </main>
 </body>
 </html>

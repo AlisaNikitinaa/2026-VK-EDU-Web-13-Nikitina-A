@@ -1,0 +1,26 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}Tag: {{ tag_name }} | AskPupkin{% endblock %}
+
+{% block questions_header %}
+<div class="current-tag">
+    <span class="tag-label">Tag:</span>
+    <span class="tag-value">{{ tag_name }}</span>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="question-list">
+    {% if questions %}
+        {% for question in questions %}
+            {% include 'layouts/question.html' %}
+        {% endfor %}
+        {% include 'layouts/pagination.html' %}
+    {% else %}
+        <div class="no-questions">
+            <p>No questions found for tag "{{ tag_name }}"</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

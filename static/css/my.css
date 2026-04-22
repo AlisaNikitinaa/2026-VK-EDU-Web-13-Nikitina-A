@@ -1,4 +1,4 @@
-/* Общие сбросы */
+/* ========== ОБЩИЕ СБРОСЫ ========== */
 * {
     margin: 0;
     padding: 0;
@@ -12,7 +12,7 @@ body {
     padding-bottom: 100px;
 }
 
-/* Шапка */
+/* ========== ШАПКА ========== */
 .header {
     background: white;
     border: 2px solid black;
@@ -25,28 +25,25 @@ body {
     margin: 0 auto;
 }
 
-/* Верхняя строка (лого, поиск, user-section) */
 .header-top {
     display: flex;
-    align-items: center;     /* всё по вертикали по центру */
+    align-items: center;
     justify-content: space-between;
     gap: 20px;
-    flex-wrap: wrap;         /* на случай узкого экрана */
+    flex-wrap: wrap;
 }
 
-/* Логотип */
 .logo {
     font-size: 55px;
     font-weight: bold;
     margin: 0;
-    white-space: nowrap; 
+    white-space: nowrap;
     margin-right: 50px;
     margin-left: 1px;
 }
 
-/* Поиск */
 .search-section {
-    flex: 1;                 /* занимает доступное место */
+    flex: 1;
     min-width: 200px;
 }
 
@@ -68,15 +65,13 @@ body {
     background: #f0f0f0;
 }
 
-/* Секция пользователя (кнопка + аватар + имя + ссылки) */
 .user-section {
     display: grid;
-    grid-template-columns: auto auto 1fr;  /* три колонки */
-    align-items: start;                    /* прижимаем к верху */
-    gap: 8px;                             /* отступ между колонками */
+    grid-template-columns: auto auto 1fr;
+    align-items: start;
+    gap: 8px;
 }
 
-/* Кнопка ASK! — первая колонка */
 .ask-btn {
     grid-column: 1;
     background: green;
@@ -89,6 +84,7 @@ body {
     white-space: nowrap;
     margin-top: 30px;
     color: white;
+    text-decoration: none;
 }
 
 .ask-btn:hover {
@@ -96,7 +92,6 @@ body {
     color: white;
 }
 
-/* Блок с аватаром и именем — вторая колонка, первая строка */
 .user-info {
     grid-column: 2;
     grid-row: 1;
@@ -104,10 +99,8 @@ body {
     align-items: center;
     gap: 8px;
     margin-top: 5px;
-
 }
 
-/* Аватар */
 .avatar {
     width: 70px;
     height: 70px;
@@ -123,7 +116,11 @@ body {
     object-fit: cover;
 }
 
-/* Имя пользователя */
+.avatar.small {
+    width: 56px;
+    height: 56px;
+}
+
 .username {
     font-size: 18px;
     font-weight: bold;
@@ -132,7 +129,6 @@ body {
     margin-left: 10px;
 }
 
-/* Ссылки Settings и Log out — вторая колонка, вторая строка */
 .user-links {
     grid-column: 2;
     grid-row: 2;
@@ -140,7 +136,6 @@ body {
     gap: 10px;
     margin-top: 2px;
     margin-left: 10px;
-    font-size: 10px;
 }
 
 .settings, .login-link {
@@ -160,23 +155,66 @@ body {
 }
 
 .header .container {
-    padding-left: 0;          /* прижимает логотип к левому краю */
+    padding-left: 0;
 }
 
-
-/* Основная часть страницы */
+/* ========== ОСНОВНАЯ ЧАСТЬ ========== */
+/* ========== ОСНОВНАЯ ЧАСТЬ ========== */
 .main-content {
-    margin-top: 30px; /* отступ от шапки */
+    margin-top: 30px;
 }
 
-/* Двухколоночная сетка: слева контент, справа сайдбар */
 .content-wrapper {
     display: grid;
-    grid-template-columns: 1fr 300px; /* левая колонка занимает всё свободное место, правая фиксирована 300px */
+    grid-template-columns: 1fr 300px;
     gap: 30px;
 }
 
-/* Карточка вопроса */
+/* Добавьте это - для страницы с формой */
+.content-wrapper:has(.ask-form-container) {
+    grid-template-columns: 1fr 300px; /* оставляем сетку */
+}
+
+.ask-form-container {
+    grid-column: 1; /* форма только в левой колонке */
+    width: 100%;
+}
+
+/* ========== ЗАГОЛОВКИ ВОПРОСОВ (New/Hot) ========== */
+.questions-header {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    margin-bottom: 30px;
+    font-family: 'Times New Roman', Times, serif;
+    padding-left: 3px;
+}
+
+.new-questions {
+    font-size: 32px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+}
+
+.new-questions.active {
+    color: #000305;
+}
+
+.hot-questions {
+    font-size: 25px;
+    color: #007bff;
+    text-decoration: none;
+    font-weight: normal;
+    transition: text-decoration 0.3s;
+}
+
+.hot-questions:hover {
+    color: #007bff;
+    text-decoration: underline;
+}
+
+/* ========== КАРТОЧКИ ВОПРОСОВ ========== */
 .question-card {
     background: white;
     border: 2px solid black;
@@ -185,7 +223,6 @@ body {
     box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
 }
 
-/* Заголовок вопроса с аватаром */
 .question-header {
     display: flex;
     align-items: center;
@@ -193,21 +230,12 @@ body {
     margin-bottom: 15px;
 }
 
-/* Маленький аватар для вопросов */
-.avatar.small {
-    width: 56px;
-    height: 56px;
-    border: 2px solid black;
-}
-
-/* Заголовок вопроса */
 .question-title {
     font-size: 22px;
     font-weight: bold;
     margin: 0;
 }
 
-/* Текст вопроса */
 .question-text {
     font-size: 16px;
     color: #333;
@@ -215,7 +243,6 @@ body {
     line-height: 1.4;
 }
 
-/* Мета-информация (лайки, ответы, теги) */
 .question-meta {
     display: flex;
     gap: 20px;
@@ -223,130 +250,6 @@ body {
     color: #666;
     border-top: 1px solid #ccc;
     padding-top: 10px;
-}
-
-.likes, .answers, .tags {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.tags {
-    color: #007bff;
-}
-
-/* Пагинация */
-.pagination {
-    display: flex;
-    gap: 10px;
-    margin-top: 30px;
-    justify-content: center;
-}
-
-.page {
-    display: inline-block;
-    padding: 8px 12px;
-    border: 2px solid black;
-    background: white;
-    color: black;
-    text-decoration: none;
-    font-weight: bold;
-    transition: all 0.3s;
-}
-
-.page:hover {
-    background: black;
-    color: white;
-}
-
-.page.active {
-    background: black;
-    color: white;
-    pointer-events: none; /* чтобы нельзя было кликнуть на текущую страницу */
-}
-
-.dots {
-    padding: 8px 0;
-    font-weight: bold;
-}
-
-/* Сайдбар */
-.sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-}
-
-/* Блоки в сайдбаре */
-.popular-tags, .best-members {
-    background: white;
-    border: 2px solid black;
-    padding: 20px;
-    box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
-}
-
-/* Заголовки в сайдбаре */
-.popular-tags h3, .best-members h3 {
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 15px;
-    border-bottom: 2px solid black;
-    padding-bottom: 5px;
-}
-
-/* Облако тегов */
-.tags-cloud {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-
-.tags-cloud a {
-    background: #f0f0f0;
-    border: 1px solid black;
-    padding: 5px 10px;
-    text-decoration: none;
-    color: black;
-    font-size: 14px;
-    transition: all 0.3s;
-}
-
-.tags-cloud a:hover {
-    background: black;
-    color: white;
-}
-
-/* Список лучших участников */
-.members-list {
-    list-style: none;
-    padding: 0;
-}
-
-.members-list li {
-    margin-bottom: 10px;
-    padding-bottom: 10px;
-    border-bottom: 1px dashed #ccc;
-}
-
-.members-list li:last-child {
-    border-bottom: none;
-}
-
-.members-list a {
-    text-decoration: none;
-    color: #007bff;
-    font-size: 16px;
-}
-
-.members-list a:hover {
-    text-decoration: underline;
-}
-
-/* Адаптивность: на узких экранах сайдбар уходит вниз */
-@media (max-width: 768px) {
-    .content-wrapper {
-        grid-template-columns: 1fr; /* одна колонка */
-    }
 }
 
 .likes-counter {
@@ -377,9 +280,166 @@ body {
     font-weight: bold;
 }
 
+/* ========== ФОРМА ДЛЯ ВОПРОСА (ASK.html) ========== */
+.new-question-section {
+    background: white;
+    border: 2px solid black;
+    padding: 25px;
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
+}
 
+.form-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    border-bottom: 2px solid black;
+    padding-bottom: 5px;
+}
 
-/* Подвал */
+.new-question-form label {
+    display: block;
+    font-weight: bold;
+    margin: 15px 0 5px;
+}
+
+.form-input, .form-textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 2px solid black;
+    font-family: inherit;
+    font-size: 16px;
+    background: white;
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 350px;
+}
+
+.form-input:focus, .form-textarea:focus {
+    outline: none;
+    background: #f0f0f0;
+}
+
+.form-submit {
+    margin-top: 20px;
+    background: green;
+    color: white;
+    border: 2px solid black;
+    padding: 6px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.form-submit:hover {
+    background: darkgreen;
+}
+
+/* ========== САЙДБАР ========== */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.popular-tags, .best-members {
+    background: white;
+    border: 2px solid black;
+    padding: 20px;
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
+}
+
+.popular-tags h3, .best-members h3 {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    border-bottom: 2px solid black;
+    padding-bottom: 5px;
+}
+
+.tags-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tags-cloud a {
+    background: #f0f0f0;
+    border: 1px solid black;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: black;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.tags-cloud a:hover {
+    background: black;
+    color: white;
+}
+
+.members-list {
+    list-style: none;
+    padding: 0;
+}
+
+.members-list li {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #ccc;
+}
+
+.members-list li:last-child {
+    border-bottom: none;
+}
+
+.members-list a {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 16px;
+}
+
+.members-list a:hover {
+    text-decoration: underline;
+}
+
+/* ========== ПАГИНАЦИЯ ========== */
+.pagination {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+    justify-content: center;
+}
+
+.page {
+    display: inline-block;
+    padding: 8px 12px;
+    border: 2px solid black;
+    background: white;
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.page:hover {
+    background: black;
+    color: white;
+}
+
+.page.active {
+    background: black;
+    color: white;
+    pointer-events: none;
+}
+
+.dots {
+    padding: 8px 0;
+    font-weight: bold;
+}
+
+/* ========== ПОДВАЛ ========== */
 .page-footer {
     margin-top: 40px;
     padding: 20px 0;
@@ -391,6 +451,671 @@ body {
     justify-content: center;
     margin-top: 0px;
     margin-bottom: 10px;
-    
 }
 
+/* ========== АДАПТИВНОСТЬ ========== */
+@media (max-width: 768px) {
+    .content-wrapper {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+
+
+
+
+/* ========== СТИЛИ ДЛЯ ASK.html (ask-form-container) ========== */
+.ask-form-container {
+    width: 100%;
+    margin: 0;
+    margin-bottom: 30px;
+    padding: 40px;
+    background: white;
+    border: 2px solid black;
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
+}
+
+.ask-form-container h2 {
+    font-size: 36px;
+    margin-bottom: 30px;
+    color: #333;
+    border-bottom: 2px solid black;
+    padding-bottom: 15px;
+}
+
+.form-group {
+    margin-bottom: 30px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid black;
+    font-family: inherit;
+    font-size: 16px;
+    background: white;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    background: #f0f0f0;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 300px;
+}
+
+.submit-btn {
+    background: green;
+    color: white;
+    border: 2px solid black;
+    padding: 12px 30px;
+    font-size: 20px;
+    cursor: pointer;
+    font-family: inherit;
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    background: darkgreen;
+}
+
+
+
+/* ========== СТИЛИ ДЛЯ НАСТРОЕК (settings.html) ========== */
+.settings-form {
+    flex: 1;
+    margin-bottom: 30px;
+    padding: 30px;
+    background: white;
+    border: 2px solid black;
+    box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.1);
+}
+
+.settings-form h2 {
+    font-size: 28px;
+    margin-bottom: 25px;
+    color: #333;
+    border-bottom: 2px solid black;
+    padding-bottom: 10px;
+}
+
+.settings-form .form-group {
+    margin-bottom: 20px;
+}
+
+.settings-form .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+.settings-form .form-group input:not([type="file"]) {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid black;
+    font-family: inherit;
+    font-size: 14px;
+    background: white;
+}
+
+.settings-form .form-group input:read-only {
+    background: #f0f0f0;
+    cursor: not-allowed;
+}
+
+.upload-avatar {
+    border-top: 1px solid #ccc;
+    padding-top: 20px;
+    margin-top: 10px;
+}
+
+.avatar-preview {
+    margin: 15px 0;
+}
+
+.avatar-preview img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid black;
+    object-fit: cover;
+}
+
+.upload-avatar button {
+    background: #007bff;
+    color: white;
+    border: 2px solid black;
+    padding: 8px 20px;
+    cursor: pointer;
+    font-family: inherit;
+    margin-right: 10px;
+}
+
+.upload-avatar button:hover {
+    background: black;
+}
+
+.upload-avatar span {
+    font-size: 14px;
+    color: #15040f;
+}
+
+.save-btn {
+    background: green;
+    color: white;
+    border: 2px solid black;
+    padding: 10px 30px;
+    font-size: 18px;
+    cursor: pointer;
+    font-family: inherit;
+    margin-top: 10px;
+}
+
+.save-btn:hover {
+    background: darkgreen;
+}
+
+
+/* ========== СТИЛИ ДЛЯ АВТОРИЗАЦИИ ========== */
+.login-form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+}
+
+.login-form {
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+    background: white;
+    border: 2px solid black;
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
+}
+
+.login-form h2 {
+    font-size: 32px;
+    margin-bottom: 30px;
+    text-align: center;
+    border-bottom: 2px solid black;
+    padding-bottom: 15px;
+}
+
+.login-form .form-group {
+    margin-bottom: 20px;
+}
+
+.login-form .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+.login-form .form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid black;
+    font-family: inherit;
+    font-size: 14px;
+    background: white;
+}
+
+.form-buttons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.login-btn {
+    background: green;
+    color: white;
+    border: 2px solid black;
+    padding: 8px 24px;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.login-btn:hover {
+    background: darkgreen;
+}
+
+.create-account {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.create-account:hover {
+    text-decoration: underline;
+}
+
+.error-message {
+    color: red;
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.auth-links {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.register-link {
+    color: #666;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.register-link:hover {
+    color: black;
+    text-decoration: underline;
+}
+
+
+/* ========== СТИЛИ ДЛЯ РЕГИСТРАЦИИ ========== */
+.registration-form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 500px;
+}
+
+.registration-form {
+    width: 100%;
+    max-width: 500px;
+    padding: 40px;
+    background: white;
+    border: 2px solid black;
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
+}
+
+.registration-form h2 {
+    font-size: 32px;
+    margin-bottom: 30px;
+    text-align: center;
+    border-bottom: 2px solid black;
+    padding-bottom: 15px;
+}
+
+.registration-form .form-group {
+    margin-bottom: 20px;
+}
+
+.registration-form .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+.registration-form .form-group input:not([type="file"]) {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid black;
+    font-family: inherit;
+    font-size: 14px;
+    background: white;
+}
+
+.registration-form .form-group input:focus {
+    outline: none;
+    background: #f0f0f0;
+}
+
+.registration-form .form-group input[type="file"] {
+    margin-top: 8px;
+}
+
+.avatar-path {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 12px;
+    color: #666;
+}
+
+.form-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 25px;
+}
+
+.register-btn {
+    background: green;
+    color: white;
+    border: 2px solid black;
+    padding: 10px 24px;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.register-btn:hover {
+    background: darkgreen;
+}
+
+.back-link {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+.error-message {
+    color: red;
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+
+/* ========== СТИЛИ ДЛЯ ЛОГОТИПА (ссылка) ========== */
+.logo a {
+    text-decoration: none;
+    color: black;
+    transition: color 0.3s;
+}
+
+.logo a:hover {
+    color: black;
+    text-decoration: none;
+}
+
+.logo a:visited {
+    color: black;
+}
+
+.logo a:active {
+    color: black;
+}
+
+/* ========== СТИЛИ ДЛЯ СТРАНИЦЫ ТЕГА ========== */
+.current-tag {
+    display: flex;
+    gap: 15px;
+    align-items: baseline;
+    margin-bottom: 30px;
+    padding: 15px 25px;
+    background: white;
+    border: 2px solid black;
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
+}
+
+.tag-label {
+    font-size: 32px;
+    font-weight: bold;
+    color: #333;
+}
+
+.tag-value {
+    font-size: 32px;
+    font-weight: bold;
+    color: #007bff;
+    background: #f0f0f0;
+    padding: 5px 20px;
+    border: 2px solid black;
+}
+
+.no-questions {
+    text-align: center;
+    padding: 60px;
+    background: white;
+    border: 2px solid black;
+    font-size: 24px;
+    color: #666;
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
+}
+
+/* ========== СТИЛИ ДЛЯ СТРАНИЦЫ ВОПРОСА ========== */
+
+/* Карточка вопроса */
+.question-page-card {
+    background: white;
+    border: 2px solid black;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
+}
+
+.question-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.question-page-title {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.question-page-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid black;
+}
+
+.question-page-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.question-page-text {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.question-page-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.question-page-tag {
+    background: #f0f0f0;
+    border: 1px solid black;
+    padding: 4px 12px;
+    text-decoration: none;
+    color: black;
+    font-size: 13px;
+    transition: 0.2s;
+}
+
+.question-page-tag:hover {
+    background: black;
+    color: white;
+}
+
+/* Секция ответов */
+.answers-page-section {
+    margin-top: 0;
+}
+
+.answers-page-title {
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    border-bottom: 2px solid black;
+    padding-bottom: 5px;
+}
+
+/* Карточка ответа */
+.answer-page-item {
+    background: white;
+    border: 2px solid black;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
+}
+
+.answer-page-header {
+    margin-bottom: 12px;
+}
+
+.answer-page-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid black;
+}
+
+.answer-page-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.answer-page-text {
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 16px;
+}
+
+/* Чекбокс правильного ответа */
+.answer-page-correct {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed #ccc;
+}
+
+.answer-page-correct input {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.answer-page-correct label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #2c5e2e;
+    cursor: pointer;
+}
+
+/* Форма добавления ответа */
+.answer-page-form {
+    background: white;
+    border: 2px solid black;
+    padding: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
+}
+
+.answer-page-form h3 {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    border-bottom: 2px solid black;
+    padding-bottom: 5px;
+}
+
+.answer-page-textarea {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid black;
+    font-family: inherit;
+    font-size: 16px;
+    resize: vertical;
+    min-height: 120px;
+    background: white;
+}
+
+.answer-page-textarea:focus {
+    outline: none;
+    background: #f9f9f9;
+}
+
+.answer-page-btn {
+    background: green;
+    border: 2px solid black;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 8px 24px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: 0.2s;
+}
+
+.answer-page-btn:hover {
+    background: black;
+    color: white;
+}
+
+
+/* Дополнительные стили для страницы вопроса */
+.question-page-meta {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #ccc;
+}
+
+.answer-page-info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+}
+
+.answer-page-author {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.answer-page-date {
+    font-size: 12px;
+    color: #666;
+}
+
+.answer-page-likes {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 10px 0;
+}
+
+.like-up-small, .like-down-small {
+    background: none;
+    border: 1px solid black;
+    font-size: 12px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.answer-page-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}

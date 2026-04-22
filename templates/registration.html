@@ -1,0 +1,59 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}Register | AskPupkin{% endblock %}
+
+{% block questions_header %}{% endblock %}
+
+{% block content %}
+<div class="registration-form-container">
+    <div class="registration-form">
+        <h2>Registration</h2>
+        
+        {% if error %}
+        <p class="error-message">{{ error }}</p>
+        {% endif %}
+        
+        <form method="post" action="{% url 'registration' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="login">Login</label>
+                <input type="text" id="login" name="username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="nickname">NickName</label>
+                <input type="text" id="nickname" name="nickname" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <div class="form-group">
+                <label for="repeat-password">Repeat password</label>
+                <input type="password" id="repeat-password" name="confirm_password" required>
+            </div>
+
+            <div class="form-group">
+                <label for="avatar">Upload avatar</label>
+                <input type="file" id="avatar" name="avatar" accept="image/*">
+                <span id="avatar-path" class="avatar-path">No file chosen</span>
+            </div>
+
+            <div class="form-buttons">
+                <button type="submit" class="register-btn">Register!</button>
+                <a href="{% url 'authorization' %}" class="back-link">Back to Log in</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+

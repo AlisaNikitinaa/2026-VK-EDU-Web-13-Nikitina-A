@@ -3,11 +3,18 @@
 
 {% block title %}Список вопросов | AskPupkin{% endblock %}
 
+{% block questions_header %}
+<div class="questions-header">
+    <span class="new-questions active">New Questions</span>
+    <a href="{% url 'hot_questions' %}" class="hot-questions {% if request.resolver_match.url_name == 'hot_questions' %}active{% endif %}">Hot Questions</a>
+</div>
+{% endblock %}
+
 {% block content %}
-                    <div class="question-list">
-                        {% for question in questions %}
-                            {% include 'layouts/question.html' %}
-                        {% endfor %}
-                        {% include 'layouts/pagination.html' %}
-                    </div>
+<div class="question-list">
+    {% for question in questions %}
+        {% include 'layouts/question.html' %}
+    {% endfor %}
+    {% include 'layouts/pagination.html' %}
+</div>
 {% endblock %}

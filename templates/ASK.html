@@ -1,0 +1,27 @@
+{% extends 'layouts/base.html' %}
+
+
+{% block title %}Ask a Question{% endblock %}
+
+{% block content %}
+<!-- Форма будет занимать всю доступную ширину -->
+<div class="ask-form-container">
+    <h2>Ask Your Question</h2>
+    <form method="post" action="{% url 'ask_form' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" placeholder="How to build a moon park?">
+        </div>
+        <div class="form-group">
+            <label for="text">Question:</label>
+            <textarea id="text" name="text" rows="5" required placeholder="Really, how?&#10;Have no idea about it"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="tags">Tags:</label>
+            <input type="text" id="tags" name="tags" placeholder="moon, parks, puzzle">
+        </div>
+        <button type="submit" class="submit-btn">ASK!</button>
+    </form>
+</div>
+{% endblock %}

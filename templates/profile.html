@@ -1,0 +1,33 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block title %}Ask a Question{% endblock %}
+
+{% block content %}
+            <div class="settings-form">
+                <h2>Settings: Dr. Pepper</h2>
+                <form>
+                    <div class="form-group">
+                        <label>Login</label>
+                        <input type="text" value="dr_pepper" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" value="drpepper@mail.ru">
+                    </div>
+                    <div class="form-group">
+                        <label>NickName</label>
+                        <input type="text" value="Dr. Perpper">
+                    </div>
+                    <div class="form-group upload-avatar">
+                        <label>Upload avatar</label>
+                        <div class="avatar-preview">
+                            <img src="{% static 'img/ask2.jpg' %}" alt="Current avatar">
+                        </div>
+                        <input type="file" id="avatar-file" style="display: none;">
+                        <button type="button" onclick="document.getElementById('avatar-file').click()">Choose</button>
+                        <span>c:\avatar.jpg</span>
+                    </div>
+                    <button type="submit" class="save-btn">Save</button>
+                </form>
+            </div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}Hot Questions | AskPupkin{% endblock %}
+
+{% block questions_header %}
+<div class="questions-header">
+    <a href="{% url 'index' %}" class="new-questions">New Questions</a>
+    <a href="{% url 'hot_questions' %}" class="hot-questions active">Hot Questions</a>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="question-list">
+    {% if questions %}
+        {% for question in questions %}
+            {% include 'layouts/question.html' %}
+        {% endfor %}
+    {% else %}
+        <div class="no-questions">
+            <p>No hot questions yet.</p>
+        </div>
+    {% endif %}
+    
+    {% include 'layouts/pagination.html' %}
+</div>
+{% endblock %}
