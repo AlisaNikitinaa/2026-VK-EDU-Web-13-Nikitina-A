@@ -5,22 +5,22 @@
             <img src="{% static 'img/ask2.jpg' %}" alt="avatar">
         </div>
         <h2 class="question-title">
-            <a href="{% url 'one_question' question.id %}">{{ question.title }}</a>
+            <a href="{% url 'one_question' question.pk %}">{{ question.title }}</a>
         </h2>
     </div>
     <p class="question-text">{{ question.text|truncatechars:150 }}</p>
     <div class="question-meta">
         <div class="likes-counter">
             <button class="like-up">▲</button>
-            <span class="likes-count">{{ question.likes }}</span>
+            <span class="likes-count">{{ question.rating }}</span>
             <button class="like-down">▼</button>
         </div>
         <span class="answers">
-            <a href="{% url 'one_question' question.id %}">answer ({{ question.answers }})</a>
+            <a href="{% url 'one_question' question.pk %}">answer ({{ question.answer_count }})</a>
         </span>
         <span class="tags">Tags: 
-            {% for tag in question.tags %}
-                <a href="{% url 'tag' tag_name=tag %}">{{ tag }}</a>{% if not forloop.last %}, {% endif %}
+            {% for tag in question.tags.all %}
+                <a href="{% url 'tag' tag_name=tag.name %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
             {% endfor %}
         </span>
     </div>

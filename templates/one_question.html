@@ -6,73 +6,75 @@
 {% block questions_header %}{% endblock %}
 
 {% block content %}
-<!-- Карточка вопроса -->
-<div class="question-page-card">
-    <div class="question-page-header">
-        <h1 class="question-page-title">{{ question.title }}</h1>
-        <div class="question-page-avatar">
-            <img src="{% static 'img/ask2.jpg' %}" alt="Author Avatar">
+<div class="question-page-wrapper">
+    <!-- Карточка вопроса -->
+    <div class="question-page-card">
+        <div class="question-page-header">
+            <h1 class="question-page-title">{{ question.title }}</h1>
+            <div class="question-page-avatar">
+                <img src="{% static 'img/ask2.jpg' %}" alt="Author Avatar">
+            </div>
+        </div>
+        <div class="question-page-text">
+            {{ question.text }}
+        </div>
+        <div class="question-page-tags">
+            {% for tag in question.tags.all %}
+                <a href="{% url 'tag' tag_name=tag.name %}" class="question-page-tag">{{ tag.name }}</a>
+            {% endfor %}
+        </div>
+        <div class="question-page-meta">
+            <div class="likes-counter">
+                <button class="like-up">▲</button>
+                <span class="likes-count">{{ question.rating }}</span>
+                <button class="like-down">▼</button>
+            </div>
         </div>
     </div>
-    <div class="question-page-text">
-        {{ question.text }}
-    </div>
-    <div class="question-page-tags">
-        {% for tag in question.tags %}
-            <a href="{% url 'tag' tag_name=tag %}" class="question-page-tag">{{ tag }}</a>
+
+    <!-- Секция ответов -->
+    <div class="answers-page-section">
+        <h2 class="answers-page-title">Answers <span>({{ answers|length }})</span></h2>
+
+        {% for answer in answers %}
+        <div class="answer-page-item">
+            <div class="answer-page-header">
+                <div class="answer-page-avatar">
+                    <img src="{% static 'img/ask1.jpg' %}" alt="Avatar">
+                </div>
+                <div class="answer-page-info">
+                    <span class="answer-page-author">{{ answer.author }}</span>
+                    <span class="answer-page-date">{{ answer.created_at }}</span>
+                </div>
+            </div>
+            <div class="answer-page-text">
+                {{ answer.text }}
+            </div>
+            <div class="answer-page-likes">
+                <button class="like-up-small">▲</button>
+                <span>{{ answer.rating }}</span>
+                <button class="like-down-small">▼</button>
+            </div>
+            <div class="answer-page-correct">
+                <input type="checkbox" id="correctAnswer{{ forloop.counter }}" {% if answer.is_correct %}checked{% endif %}>
+                <label for="correctAnswer{{ forloop.counter }}">✓ Correct!</label>
+            </div>
+        </div>
+        {% empty %}
+        <div class="no-answers">
+            <p>No answers yet. Be the first to answer!</p>
+        </div>
         {% endfor %}
-    </div>
-    <div class="question-page-meta">
-        <div class="likes-counter">
-            <button class="like-up">▲</button>
-            <span class="likes-count">{{ question.likes }}</span>
-            <button class="like-down">▼</button>
-        </div>
-    </div>
-</div>
 
-<!-- Секция ответов -->
-<div class="answers-page-section">
-    <h2 class="answers-page-title">Answers <span>({{ answers|length }})</span></h2>
-
-    {% for answer in answers %}
-    <div class="answer-page-item">
-        <div class="answer-page-header">
-            <div class="answer-page-avatar">
-                <img src="{% static 'img/ask1.jpg' %}" alt="Avatar">
-            </div>
-            <div class="answer-page-info">
-                <span class="answer-page-author">{{ answer.author }}</span>
-                <span class="answer-page-date">{{ answer.created_at }}</span>
-            </div>
+        <!-- Форма добавления ответа -->
+        <div class="answer-page-form">
+            <h3>Your answer</h3>
+            <form method="post" action="{% url 'add_answer' question.pk %}">
+                {% csrf_token %}
+                <textarea name="answer_text" class="answer-page-textarea" placeholder="Enter your answer here." required></textarea>
+                <button type="submit" class="answer-page-btn">Answer</button>
+            </form>
         </div>
-        <div class="answer-page-text">
-            {{ answer.text }}
-        </div>
-        <div class="answer-page-likes">
-            <button class="like-up-small">▲</button>
-            <span>{{ answer.likes }}</span>
-            <button class="like-down-small">▼</button>
-        </div>
-        <div class="answer-page-correct">
-            <input type="checkbox" id="correctAnswer{{ forloop.counter }}" {% if answer.is_correct %}checked{% endif %}>
-            <label for="correctAnswer{{ forloop.counter }}">✓ Correct!</label>
-        </div>
-    </div>
-    {% empty %}
-    <div class="no-answers">
-        <p>No answers yet. Be the first to answer!</p>
-    </div>
-    {% endfor %}
-
-    <!-- Форма добавления ответа -->
-    <div class="answer-page-form">
-        <h3>Your answer</h3>
-        <form method="post" action="{% url 'add_answer' question.id %}">
-            {% csrf_token %}
-            <textarea name="answer_text" class="answer-page-textarea" placeholder="Enter your answer here." required></textarea>
-            <button type="submit" class="answer-page-btn">Answer</button>
-        </form>
     </div>
 </div>
 {% endblock %}

@@ -2,21 +2,22 @@
     <div class="container">
         <div class="pagination">
             {% if page_obj.has_other_pages %}
-                <!-- Кнопка «Назад» -->
                 {% if page_obj.has_previous %}
                     <a href="?page={{ page_obj.previous_page_number }}" class="page">Previous</a>
                 {% endif %}
 
-                <!-- Номера страниц -->
                 {% for num in page_obj.paginator.page_range %}
                     {% if page_obj.number == num %}
                         <a href="#" class="page active">{{ num }}</a>
-                    {% else %}
+                    {% elif num == 1 or num == page_obj.paginator.num_pages %}
                         <a href="?page={{ num }}" class="page">{{ num }}</a>
+                    {% elif num >= page_obj.number|add:"-2" and num <= page_obj.number|add:"2" %}
+                        <a href="?page={{ num }}" class="page">{{ num }}</a>
+                    {% elif num == page_obj.number|add:"-3" or num == page_obj.number|add:"3" %}
+                        <span class="page-dots">...</span>
                     {% endif %}
                 {% endfor %}
 
-                <!-- Кнопка «Вперёд» -->
                 {% if page_obj.has_next %}
                     <a href="?page={{ page_obj.next_page_number }}" class="page">Next</a>
                 {% endif %}
