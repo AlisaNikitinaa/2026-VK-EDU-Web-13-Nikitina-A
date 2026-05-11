@@ -123,14 +123,7 @@ else:
             'PORT': os.getenv('DB_PORT', '5432'),
         }
     }
-# Если вы пока не установили PostgreSQL и хотите использовать SQLite для тестирования,
-# раскомментируйте строки ниже и закомментируйте блок выше:
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+
 
 
 # Password validation
