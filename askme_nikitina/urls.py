@@ -8,16 +8,11 @@ from app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('__debug__/', include('debug_toolbar.urls')),
+    path('', include('core.urls')),
     path('', views.index, name='index'),
-    path('ask/', views.ask_form, name='ask_form'),
-    path('question/<int:pk>/', views.question, name='one_question'),
-    path('question/<int:pk>/add_answer/', views.add_answer, name='add_answer'),
-    path('profile/', views.profile, name='profile'),
-    path('authorization/', views.authorization, name='authorization'),
-    path('registration/', views.registration, name='registration'),
-    path('logout/', views.logout_view, name='logout'),
-    path('tag/<str:tag_name>/', views.tag, name='tag'),
     path('hot/', views.hot_questions, name='hot_questions'),
+    path('question/<int:pk>/', views.question, name='one_question'),
+    path('tag/<str:tag_name>/', views.tag, name='tag'),
 ]
 
 if settings.DEBUG:

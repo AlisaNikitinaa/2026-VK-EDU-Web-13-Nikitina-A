@@ -15,11 +15,20 @@ def paginate(queryset, request, per_page=5):
         return paginator.page(page_num)
     except InvalidPage:
         raise Http404
-
+FIXED_TAGS = [
+    'perl',
+    'python',
+    'TechnoPark',
+    'MySQL',
+    'django',
+    'Mail.Ru',
+    'Voloshin',
+    'Firefox'
+]
 
 def get_sidebar_context():
     return {
-        'popular_tags': Tag.objects.all()[:10],
+        'popular_tags': Tag.objects.filter(name__in=FIXED_TAGS),
     }
 
 

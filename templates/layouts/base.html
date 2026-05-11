@@ -18,18 +18,37 @@
                     <input type="text" class="search-input" placeholder="🔍Search">
                 </div>
                 <div class="user-section">
-                    <a href="{% url 'ask_form' %}">
-                        <button class="ask-btn">ASK!</button>
-                    </a>
-                    <div class="user-info">
-                        <div class="avatar"><img src="{% static 'img/ask1.jpg' %}" alt="Avatar"></div>
-                        <span class="username"><a href="{% url 'profile' %}">Dr. Pepper</a></span>
-                    </div>
-                    <div class="user-links">
-                        <a href="{% url 'profile' %}" class="settings">Settings</a>
-                        <span class="separator">|</span>
-                        <a href="{% url 'authorization' %}" class="login-link">Log out</a>
-                    </div>
+                    {% if request.user.is_authenticated %}
+                        <a href="{% url 'ask_form' %}">
+                            <button class="ask-btn">ASK!</button>
+                        </a>
+                        <div class="user-info">
+                            <div class="avatar">
+                                {% if request.user.profile.avatar %}
+                                    <img src="{{ request.user.profile.avatar.url }}" alt="Avatar">
+                                {% else %}
+                                    <img src="{% static 'img/ask1.jpg' %}" alt="Avatar">
+                                {% endif %}
+                            </div>
+                            <span class="username">
+                                <a href="{% url 'profile' %}">{{ request.user.username }}</a>
+                            </span>
+                        </div>
+                        <div class="user-links">
+                            <a href="{% url 'profile' %}" class="settings">Settings</a>
+                            <span class="separator">|</span>
+                            <a href="{% url 'logout' %}" class="login-link">Log out</a>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'ask_form' %}" title="Войдите, чтобы задать вопрос">
+                            <button class="ask-btn" disabled>ASK!</button>
+                        </a>
+                        <div class="user-links">
+                            <a href="{% url 'login' %}" class="login-link">Войти</a>
+                            <span class="separator">|</span>
+                            <a href="{% url 'signup' %}" class="settings">Регистрация</a>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -37,15 +56,10 @@
 
     <main class="main-content">
         <div class="container">
-            <!-- НОВЫЙ БЛОК для заголовков вопросов -->
-            {% block questions_header %}
-            <!-- По умолчанию пусто, будет переопределен только на нужных страницах -->
-            {% endblock %}
+            {% block questions_header %}{% endblock %}
 
             <div class="content-wrapper">
-                {% block content %}
-                <!-- Сюда будет вставляться контент конкретных страниц -->
-                {% endblock %}
+                {% block content %}{% endblock %}
 
                 <aside class="sidebar">
                     {% block sidebar %}

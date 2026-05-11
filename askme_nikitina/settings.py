@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'debug_toolbar',  # Для отладки запросов к БД
     
     
-    'app',  
+    'app',
+    'core',  
 ]
 
 MIDDLEWARE = [
@@ -123,32 +124,17 @@ else:
             'PORT': os.getenv('DB_PORT', '5432'),
         }
     }
-# Если вы пока не установили PostgreSQL и хотите использовать SQLite для тестирования,
-# раскомментируйте строки ниже и закомментируйте блок выше:
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+
 
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 
@@ -193,7 +179,7 @@ INTERNAL_IPS = [
     'localhost',
 ]
 
-# Настройки для логирования (опционально, поможет при отладке)
+# Настройки для логирования 
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
