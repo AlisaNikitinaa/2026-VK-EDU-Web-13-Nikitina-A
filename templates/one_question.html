@@ -25,9 +25,17 @@
         </div>
         <div class="question-page-meta">
             <div class="likes-counter">
-                <button class="like-up">▲</button>
-                <span class="likes-count">{{ question.rating }}</span>
-                <button class="like-down">▼</button>
+                {% if request.user.is_authenticated %}
+                    <button class="like-up" data-id="{{ question.pk }}" data-type="question">▲</button>
+                {% else %}
+                    <button class="like-up" disabled title="Войдите, чтобы оценить">▲</button>
+                {% endif %}
+                <span class="likes-count" id="question-rating-{{ question.pk }}">{{ question.rating }}</span>
+                {% if request.user.is_authenticated %}
+                    <button class="like-down" data-id="{{ question.pk }}" data-type="question">▼</button>
+                {% else %}
+                    <button class="like-down" disabled title="Войдите, чтобы оценить">▼</button>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -37,7 +45,7 @@
         <h2 class="answers-page-title">Answers <span>({{ answers|length }})</span></h2>
 
         {% for answer in answers %}
-        <div class="answer-page-item">
+        <div class="answer-page-item" id="answer-{{ answer.pk }}">
             <div class="answer-page-header">
                 <div class="answer-page-avatar">
                     <img src="{% static 'img/ask1.jpg' %}" alt="Avatar">
@@ -51,13 +59,29 @@
                 {{ answer.text }}
             </div>
             <div class="answer-page-likes">
-                <button class="like-up-small">▲</button>
-                <span>{{ answer.rating }}</span>
-                <button class="like-down-small">▼</button>
+                {% if request.user.is_authenticated %}
+                    <button class="like-up-small" data-id="{{ answer.pk }}" data-type="answer">▲</button>
+                {% else %}
+                    <button class="like-up-small" disabled title="Войдите, чтобы оценить">▲</button>
+                {% endif %}
+                <span id="answer-rating-{{ answer.pk }}">{{ answer.rating }}</span>
+                {% if request.user.is_authenticated %}
+                    <button class="like-down-small" data-id="{{ answer.pk }}" data-type="answer">▼</button>
+                {% else %}
+                    <button class="like-down-small" disabled title="Войдите, чтобы оценить">▼</button>
+                {% endif %}
             </div>
             <div class="answer-page-correct">
-                <input type="checkbox" id="correctAnswer{{ forloop.counter }}" {% if answer.is_correct %}checked{% endif %}>
-                <label for="correctAnswer{{ forloop.counter }}">✓ Correct!</label>
+                {% if request.user == question.author %}
+                    <input type="checkbox" 
+                           class="correct-checkbox" 
+                           id="correctAnswer{{ answer.pk }}" 
+                           data-id="{{ answer.pk }}"
+                           {% if answer.is_correct %}checked{% endif %}>
+                    <label for="correctAnswer{{ answer.pk }}">✓ Correct!</label>
+                {% elif answer.is_correct %}
+                    <span style="color: green;">✓ Correct!</span>
+                {% endif %}
             </div>
         </div>
         {% empty %}
@@ -69,12 +93,90 @@
         <!-- Форма добавления ответа -->
         <div class="answer-page-form">
             <h3>Your answer</h3>
+            {% if request.user.is_authenticated %}
             <form method="post" action="{% url 'add_answer' question.pk %}">
                 {% csrf_token %}
                 <textarea name="answer_text" class="answer-page-textarea" placeholder="Enter your answer here." required></textarea>
                 <button type="submit" class="answer-page-btn">Answer</button>
             </form>
+            {% else %}
+            <p><a href="{% url 'login' %}?next={{ request.path }}">Войдите</a>, чтобы оставить ответ.</p>
+            {% endif %}
         </div>
     </div>
 </div>
+
+<script>
+const CSRF_TOKEN = '{{ csrf_token }}';
+
+function sendLike(url, value, ratingElementId) {
+    const body = new FormData();
+    body.append('value', value);
+    fetch(url, {
+        method: 'POST',
+        headers: {'X-CSRFToken': CSRF_TOKEN},
+        body: body,
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.error === 'login_required') {
+            window.location.href = '/login/?next=' + window.location.pathname;
+        } else if (data.rating !== undefined) {
+            document.getElementById(ratingElementId).textContent = data.rating;
+        }
+    })
+    .catch(err => console.error(err));
+}
+
+// Лайки вопроса вверх
+document.querySelectorAll('.like-up[data-type="question"]').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const id = this.dataset.id;
+        sendLike(`/question/${id}/like/`, '1', `question-rating-${id}`);
+    });
+});
+
+// Лайки вопроса вниз
+document.querySelectorAll('.like-down[data-type="question"]').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const id = this.dataset.id;
+        sendLike(`/question/${id}/like/`, '-1', `question-rating-${id}`);
+    });
+});
+
+// Лайки ответов вверх
+document.querySelectorAll('.like-up-small[data-type="answer"]').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const id = this.dataset.id;
+        sendLike(`/answer/${id}/like/`, '1', `answer-rating-${id}`);
+    });
+});
+
+// Лайки ответов вниз
+document.querySelectorAll('.like-down-small[data-type="answer"]').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const id = this.dataset.id;
+        sendLike(`/answer/${id}/like/`, '-1', `answer-rating-${id}`);
+    });
+});
+
+// Правильный ответ
+document.querySelectorAll('.correct-checkbox').forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+        const id = this.dataset.id;
+        fetch(`/answer/${id}/correct/`, {
+            method: 'POST',
+            headers: {'X-CSRFToken': CSRF_TOKEN},
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+                this.checked = !this.checked;
+            }
+        })
+        .catch(err => console.error(err));
+    });
+});
+</script>
 {% endblock %}

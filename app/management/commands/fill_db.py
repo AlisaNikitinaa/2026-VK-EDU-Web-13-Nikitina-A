@@ -119,7 +119,6 @@ class Command(BaseCommand):
         count = ratio * 200
         batch_size = 20000
 
-        # Лайки вопросов
         buffer = []
         seen = set()
         with transaction.atomic():
@@ -130,14 +129,17 @@ class Command(BaseCommand):
                 q = random.choice(question_ids)
                 if (u, q) not in seen:
                     seen.add((u, q))
-                    buffer.append(QuestionLike(user_id=u, question_id=q))
+                    buffer.append(QuestionLike(
+                        user_id=u,
+                        question_id=q,
+                        value=random.choice([1, -1])
+                    ))
                 if len(buffer) >= batch_size:
                     QuestionLike.objects.bulk_create(buffer, ignore_conflicts=True)
                     buffer = []
             if buffer:
                 QuestionLike.objects.bulk_create(buffer, ignore_conflicts=True)
 
-        # Лайки ответов
         buffer = []
         seen = set()
         with transaction.atomic():
@@ -148,7 +150,11 @@ class Command(BaseCommand):
                 a = random.choice(answer_ids)
                 if (u, a) not in seen:
                     seen.add((u, a))
-                    buffer.append(AnswerLike(user_id=u, answer_id=a))
+                    buffer.append(AnswerLike(
+                        user_id=u,
+                        answer_id=a,
+                        value=random.choice([1, -1])
+                    ))
                 if len(buffer) >= batch_size:
                     AnswerLike.objects.bulk_create(buffer, ignore_conflicts=True)
                     buffer = []

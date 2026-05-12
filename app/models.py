@@ -1,8 +1,14 @@
+import uuid
+import os
 from django.db import models
 from django.contrib.auth.models import User
 
 
-# ─── Managers ───────────────────────────────────────────────────────────────
+def avatar_upload_path(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = f'{uuid.uuid4()}.{ext}'
+    return os.path.join('avatars', filename)
+
 
 class QuestionManager(models.Manager):
     def new(self):
@@ -15,8 +21,6 @@ class QuestionManager(models.Manager):
         return self.filter(tags__name=tag_name).order_by('-created_at')
 
 
-# ─── Models ──────────────────────────────────────────────────────────────────
-
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     avatar = models.CharField(max_length=255, blank=True, null=True)
@@ -27,6 +31,11 @@ class Profile(models.Model):
 
     def __str__(self):
         return f'Профиль: {self.user.username}'
+
+    def get_avatar_url(self):
+        if self.avatar:
+            return self.avatar
+        return None
 
 
 class Tag(models.Model):
@@ -84,11 +93,12 @@ class Answer(models.Model):
 class QuestionLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='question_likes', verbose_name='Пользователь')
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='likes', verbose_name='Вопрос')
+    value = models.SmallIntegerField(default=1)
 
     class Meta:
         verbose_name = 'Лайк вопроса'
         verbose_name_plural = 'Лайки вопросов'
-        unique_together = ('user', 'question')  # защита от накрутки
+        unique_together = ('user', 'question')
 
     def __str__(self):
         return f'{self.user.username} → {self.question.title}'
@@ -97,11 +107,12 @@ class QuestionLike(models.Model):
 class AnswerLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='answer_likes', verbose_name='Пользователь')
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE, related_name='likes', verbose_name='Ответ')
+    value = models.SmallIntegerField(default=1)
 
     class Meta:
         verbose_name = 'Лайк ответа'
         verbose_name_plural = 'Лайки ответов'
-        unique_together = ('user', 'answer')  # защита от накрутки
+        unique_together = ('user', 'answer')
 
     def __str__(self):
         return f'{self.user.username} → ответ #{self.answer.pk}'
