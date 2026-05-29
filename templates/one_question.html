@@ -7,7 +7,6 @@
 
 {% block content %}
 <div class="question-page-wrapper">
-    <!-- Карточка вопроса -->
     <div class="question-page-card">
         <div class="question-page-header">
             <h1 class="question-page-title">{{ question.title }}</h1>
@@ -15,9 +14,7 @@
                 <img src="{% static 'img/ask2.jpg' %}" alt="Author Avatar">
             </div>
         </div>
-        <div class="question-page-text">
-            {{ question.text }}
-        </div>
+        <div class="question-page-text">{{ question.text }}</div>
         <div class="question-page-tags">
             {% for tag in question.tags.all %}
                 <a href="{% url 'tag' tag_name=tag.name %}" class="question-page-tag">{{ tag.name }}</a>
@@ -28,75 +25,76 @@
                 {% if request.user.is_authenticated %}
                     <button class="like-up" data-id="{{ question.pk }}" data-type="question">▲</button>
                 {% else %}
-                    <button class="like-up" disabled title="Войдите, чтобы оценить">▲</button>
+                    <button class="like-up" disabled>▲</button>
                 {% endif %}
                 <span class="likes-count" id="question-rating-{{ question.pk }}">{{ question.rating }}</span>
                 {% if request.user.is_authenticated %}
                     <button class="like-down" data-id="{{ question.pk }}" data-type="question">▼</button>
                 {% else %}
-                    <button class="like-down" disabled title="Войдите, чтобы оценить">▼</button>
+                    <button class="like-down" disabled>▼</button>
                 {% endif %}
             </div>
         </div>
     </div>
 
-    <!-- Секция ответов -->
+    
     <div class="answers-page-section">
-        <h2 class="answers-page-title">Answers <span>({{ answers|length }})</span></h2>
+        <h2 class="answers-page-title">
+            Answers <span id="answers-count">({{ answers|length }})</span>
+        </h2>
 
-        {% for answer in answers %}
-        <div class="answer-page-item" id="answer-{{ answer.pk }}">
-            <div class="answer-page-header">
-                <div class="answer-page-avatar">
-                    <img src="{% static 'img/ask1.jpg' %}" alt="Avatar">
+        <div id="answers-list">
+            {% for answer in answers %}
+            <div class="answer-page-item" id="answer-{{ answer.pk }}">
+                <div class="answer-page-header">
+                    <div class="answer-page-avatar">
+                        <img src="{% static 'img/ask1.jpg' %}" alt="Avatar">
+                    </div>
+                    <div class="answer-page-info">
+                        <span class="answer-page-author">{{ answer.author }}</span>
+                        <span class="answer-page-date">{{ answer.created_at }}</span>
+                    </div>
                 </div>
-                <div class="answer-page-info">
-                    <span class="answer-page-author">{{ answer.author }}</span>
-                    <span class="answer-page-date">{{ answer.created_at }}</span>
+                <div class="answer-page-text">{{ answer.text }}</div>
+                <div class="answer-page-likes">
+                    {% if request.user.is_authenticated %}
+                        <button class="like-up-small" data-id="{{ answer.pk }}" data-type="answer">▲</button>
+                    {% else %}
+                        <button class="like-up-small" disabled>▲</button>
+                    {% endif %}
+                    <span id="answer-rating-{{ answer.pk }}">{{ answer.rating }}</span>
+                    {% if request.user.is_authenticated %}
+                        <button class="like-down-small" data-id="{{ answer.pk }}" data-type="answer">▼</button>
+                    {% else %}
+                        <button class="like-down-small" disabled>▼</button>
+                    {% endif %}
+                </div>
+                <div class="answer-page-correct">
+                    {% if request.user == question.author %}
+                        <input type="checkbox" class="correct-checkbox"
+                               id="correctAnswer{{ answer.pk }}"
+                               data-id="{{ answer.pk }}"
+                               {% if answer.is_correct %}checked{% endif %}>
+                        <label for="correctAnswer{{ answer.pk }}">✓ Correct!</label>
+                    {% elif answer.is_correct %}
+                        <span style="color: green;">✓ Correct!</span>
+                    {% endif %}
                 </div>
             </div>
-            <div class="answer-page-text">
-                {{ answer.text }}
+            {% empty %}
+            <div class="no-answers" id="no-answers-placeholder">
+                <p>No answers yet. Be the first to answer!</p>
             </div>
-            <div class="answer-page-likes">
-                {% if request.user.is_authenticated %}
-                    <button class="like-up-small" data-id="{{ answer.pk }}" data-type="answer">▲</button>
-                {% else %}
-                    <button class="like-up-small" disabled title="Войдите, чтобы оценить">▲</button>
-                {% endif %}
-                <span id="answer-rating-{{ answer.pk }}">{{ answer.rating }}</span>
-                {% if request.user.is_authenticated %}
-                    <button class="like-down-small" data-id="{{ answer.pk }}" data-type="answer">▼</button>
-                {% else %}
-                    <button class="like-down-small" disabled title="Войдите, чтобы оценить">▼</button>
-                {% endif %}
-            </div>
-            <div class="answer-page-correct">
-                {% if request.user == question.author %}
-                    <input type="checkbox" 
-                           class="correct-checkbox" 
-                           id="correctAnswer{{ answer.pk }}" 
-                           data-id="{{ answer.pk }}"
-                           {% if answer.is_correct %}checked{% endif %}>
-                    <label for="correctAnswer{{ answer.pk }}">✓ Correct!</label>
-                {% elif answer.is_correct %}
-                    <span style="color: green;">✓ Correct!</span>
-                {% endif %}
-            </div>
+            {% endfor %}
         </div>
-        {% empty %}
-        <div class="no-answers">
-            <p>No answers yet. Be the first to answer!</p>
-        </div>
-        {% endfor %}
 
-        <!-- Форма добавления ответа -->
         <div class="answer-page-form">
             <h3>Your answer</h3>
             {% if request.user.is_authenticated %}
             <form method="post" action="{% url 'add_answer' question.pk %}">
                 {% csrf_token %}
-                <textarea name="answer_text" class="answer-page-textarea" placeholder="Enter your answer here." required></textarea>
+                <textarea name="answer_text" class="answer-page-textarea"
+                          placeholder="Enter your answer here." required></textarea>
                 <button type="submit" class="answer-page-btn">Answer</button>
             </form>
             {% else %}
@@ -108,6 +106,7 @@
 
 <script>
 const CSRF_TOKEN = '{{ csrf_token }}';
+
 
 function sendLike(url, value, ratingElementId) {
     const body = new FormData();
@@ -128,55 +127,89 @@ function sendLike(url, value, ratingElementId) {
     .catch(err => console.error(err));
 }
 
-// Лайки вопроса вверх
 document.querySelectorAll('.like-up[data-type="question"]').forEach(btn => {
     btn.addEventListener('click', function() {
-        const id = this.dataset.id;
-        sendLike(`/question/${id}/like/`, '1', `question-rating-${id}`);
+        sendLike(`/question/${this.dataset.id}/like/`, '1', `question-rating-${this.dataset.id}`);
     });
 });
-
-// Лайки вопроса вниз
 document.querySelectorAll('.like-down[data-type="question"]').forEach(btn => {
     btn.addEventListener('click', function() {
-        const id = this.dataset.id;
-        sendLike(`/question/${id}/like/`, '-1', `question-rating-${id}`);
+        sendLike(`/question/${this.dataset.id}/like/`, '-1', `question-rating-${this.dataset.id}`);
     });
 });
-
-// Лайки ответов вверх
 document.querySelectorAll('.like-up-small[data-type="answer"]').forEach(btn => {
     btn.addEventListener('click', function() {
-        const id = this.dataset.id;
-        sendLike(`/answer/${id}/like/`, '1', `answer-rating-${id}`);
+        sendLike(`/answer/${this.dataset.id}/like/`, '1', `answer-rating-${this.dataset.id}`);
     });
 });
-
-// Лайки ответов вниз
 document.querySelectorAll('.like-down-small[data-type="answer"]').forEach(btn => {
     btn.addEventListener('click', function() {
-        const id = this.dataset.id;
-        sendLike(`/answer/${id}/like/`, '-1', `answer-rating-${id}`);
+        sendLike(`/answer/${this.dataset.id}/like/`, '-1', `answer-rating-${this.dataset.id}`);
     });
 });
-
-// Правильный ответ
 document.querySelectorAll('.correct-checkbox').forEach(checkbox => {
     checkbox.addEventListener('change', function() {
-        const id = this.dataset.id;
-        fetch(`/answer/${id}/correct/`, {
+        fetch(`/answer/${this.dataset.id}/correct/`, {
             method: 'POST',
             headers: {'X-CSRFToken': CSRF_TOKEN},
         })
         .then(r => r.json())
         .then(data => {
-            if (data.error) {
-                alert(data.error);
-                this.checked = !this.checked;
-            }
-        })
-        .catch(err => console.error(err));
+            if (data.error) { alert(data.error); this.checked = !this.checked; }
+        });
     });
 });
+</script>
+{% endblock %}
+
+{% block extra_js %}
+
+<script src="https://unpkg.com/centrifuge@5.2.2/dist/centrifuge.js"></script>
+<script>
+const currentPage = parseInt(new URLSearchParams(window.location.search).get('page') || '1');
+const questionId = {{ question.pk }};
+
+const centrifuge = new Centrifuge('ws://localhost:8001/connection/websocket', {
+    // без токена — анонимное подключение (connection token не нужен если не настроен)
+});
+
+const sub = centrifuge.newSubscription(`question:${questionId}`);
+
+sub.on('publication', function(ctx) {
+    const data = ctx.data;
+    const answersList = document.getElementById('answers-list');
+
+    // убираем заглушку "нет ответов" если она есть
+    const placeholder = document.getElementById('no-answers-placeholder');
+    if (placeholder) placeholder.remove();
+
+    if (currentPage !== 1) {
+        // пользователь не на первой странице — показываем alert
+        alert(`Новый ответ от ${data.author}`);
+        return;
+    }
+
+    // строим HTML нового ответа
+    const newAnswer = document.createElement('div');
+    newAnswer.className = 'answer-page-item';
+    newAnswer.innerHTML = `
+        <div class="answer-page-header">
+            <div class="answer-page-avatar">
+                <img src="/static/img/ask1.jpg" alt="Avatar">
+            </div>
+            <div class="answer-page-info">
+                <span class="answer-page-author">${data.author}</span>
+                <span class="answer-page-date">только что</span>
+            </div>
+        </div>
+        <div class="answer-page-text">${data.text}</div>
+    `;
+
+    
+    answersList.insertBefore(newAnswer, answersList.firstChild);
+});
+
+sub.subscribe();
+centrifuge.connect();
 </script>
 {% endblock %}

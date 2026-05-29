@@ -13,6 +13,7 @@ urlpatterns = [
     path('hot/', views.hot_questions, name='hot_questions'),
     path('question/<int:pk>/', views.question, name='one_question'),
     path('tag/<str:tag_name>/', views.tag, name='tag'),
+    path('search/', views.search, name='search'),  # НОВОЕ
 ]
 
 if settings.DEBUG:

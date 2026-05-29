@@ -1,4 +1,6 @@
 services:
+
+  # ── База данных ───────────────────────────────────────────────
   db:
     image: postgres:16-alpine
     environment:
@@ -15,6 +17,18 @@ services:
       timeout: 5s
       retries: 5
 
+  # ── Redis ─────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ── Django ────────────────────────────────────────────────────
   web:
     build: .
     ports:
@@ -27,9 +41,59 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     command: >
       sh -c "python manage.py migrate &&
              python manage.py runserver 0.0.0.0:8000"
+
+  # ── Celery Worker ─────────────────────────────────────────────
+  celery:
+    build: .
+    volumes:
+      - .:/app
+    env_file:
+      - .env.docker
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: celery -A askme_nikitina worker -l info
+
+  # ── Celery Beat ───────────────────────────────────────────────
+  celerybeat:
+    build: .
+    volumes:
+      - .:/app
+    env_file:
+      - .env.docker
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: celery -A askme_nikitina beat -l info
+
+  # ── Centrifugo ────────────────────────────────────────────────
+  centrifugo:
+    image: centrifugo/centrifugo:v5
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./centrifugo:/centrifugo
+    command: centrifugo --config=/centrifugo/config.json
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+
+  # ── MailDev (SMTP для разработки) ────────────────────────────
+  maildev:
+    image: maildev/maildev
+    ports:
+      - "1080:1080"   
+      - "1025:1025" 
 
 volumes:
   pg_data:

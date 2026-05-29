@@ -8,15 +8,48 @@
     <meta name="author" content="2026-VK-EDU-Web-13-Nikitina-A">
     <link rel="stylesheet" href="{% static 'css/my.css' %}">
     <link rel="icon" href="{% static 'img/ask3.jpg' %}">
+    <style>
+        .search-wrapper { position: relative; }
+        .search-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .search-dropdown a {
+            display: block;
+            padding: 8px 12px;
+            color: #333;
+            text-decoration: none;
+            border-bottom: 1px solid #eee;
+        }
+        .search-dropdown a:hover { background: #f5f5f5; }
+        .search-dropdown .no-results {
+            padding: 8px 12px;
+            color: #999;
+        }
+    </style>
 </head>
 <body>
     <header class="header">
         <div class="container">
             <div class="header-top">
                 <h1 class="logo"><a href="{% url 'index' %}">AskPupkin</a></h1>
+
+                <!-- ИЗМЕНЕНО: добавили обёртку и dropdown -->
                 <div class="search-section">
-                    <input type="text" class="search-input" placeholder="🔍Search">
+                    <div class="search-wrapper">
+                        <input type="text" id="search-input" class="search-input" placeholder="🔍Search" autocomplete="off">
+                        <div class="search-dropdown" id="search-dropdown"></div>
+                    </div>
                 </div>
+
                 <div class="user-section">
                     {% if request.user.is_authenticated %}
                         <a href="{% url 'ask_form' %}">
@@ -67,6 +100,7 @@
                         <h3>Popular Tags</h3>
                         <div class="tags-cloud">
                             {% for tag in popular_tags %}
+                                <!-- popular_tags теперь список словарей из кеша -->
                                 <a href="{% url 'tag' tag_name=tag.name %}">{{ tag.name }}</a>
                             {% empty %}
                                 <span>Нет тегов</span>
@@ -74,14 +108,15 @@
                         </div>
                     </section>
 
+                    <!-- ИЗМЕНЕНО: теперь берём из кеша, а не хардкод -->
                     <section class="best-members">
                         <h3>Best Members</h3>
                         <ul class="members-list">
-                            <li><a href="#">Mr. Freeman</a></li>
-                            <li><a href="#">Dr. House</a></li>
-                            <li><a href="#">Bender</a></li>
-                            <li><a href="#">Queen Victoria</a></li>
-                            <li><a href="#">V.Pupkin</a></li>
+                            {% for member in best_members %}
+                                <li><a href="#">{{ member.user__username }}</a></li>
+                            {% empty %}
+                                <li>Нет данных</li>
+                            {% endfor %}
                         </ul>
                     </section>
                     {% endblock %}
@@ -89,5 +124,49 @@
             </div>
         </div>
     </main>
+
+    <!-- НОВОЕ: JS поиска с debounce -->
+    <script>
+    const searchInput = document.getElementById('search-input');
+    const searchDropdown = document.getElementById('search-dropdown');
+    let searchTimer = null;
+
+    searchInput.addEventListener('input', function() {
+        clearTimeout(searchTimer);
+        const query = this.value.trim();
+
+        if (query.length < 2) {
+            searchDropdown.style.display = 'none';
+            return;
+        }
+
+        searchTimer = setTimeout(async function() {
+            try {
+                const resp = await fetch(`/search/?q=${encodeURIComponent(query)}`);
+                const data = await resp.json();
+
+                if (data.results.length === 0) {
+                    searchDropdown.innerHTML = '<div class="no-results">Ничего не найдено</div>';
+                } else {
+                    searchDropdown.innerHTML = data.results
+                        .map(r => `<a href="/question/${r.id}/">${r.title}</a>`)
+                        .join('');
+                }
+                searchDropdown.style.display = 'block';
+            } catch(e) {
+                console.error('Search error:', e);
+            }
+        }, 300);  // debounce 300ms
+    });
+
+    // скрываем dropdown при клике вне поиска
+    document.addEventListener('click', function(e) {
+        if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
+            searchDropdown.style.display = 'none';
+        }
+    });
+    </script>
+
+    {% block extra_js %}{% endblock %}
 </body>
 </html>
