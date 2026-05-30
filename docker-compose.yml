@@ -28,14 +28,14 @@ services:
       timeout: 5s
       retries: 5
 
-  # ── Django ────────────────────────────────────────────────────
+  # ── Django (gunicorn) ─────────────────────────────────────────
   web:
     build: .
     ports:
       - "8000:8000"
     volumes:
       - .:/app
-      - media_data:/app/media
+      - ./media:/app/media
     env_file:
       - .env.docker
     depends_on:
@@ -43,9 +43,7 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    command: >
-      sh -c "python manage.py migrate &&
-             python manage.py runserver 0.0.0.0:8000"
+    command: gunicorn -c gunicorn.conf.py askme_nikitina.wsgi:application
 
   # ── Celery Worker ─────────────────────────────────────────────
   celery:
@@ -88,12 +86,32 @@ services:
         soft: 65535
         hard: 65535
 
-  # ── MailDev (SMTP для разработки) ────────────────────────────
+  # ── MailDev ───────────────────────────────────────────────────
   maildev:
     image: maildev/maildev
     ports:
-      - "1080:1080"   
-      - "1025:1025" 
+      - "1080:1080"
+      - "1025:1025"
+
+  # ── Nginx ─────────────────────────────────────────────────────
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "8081:8081"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./static:/askme/static:ro
+      - ./media:/askme/media:ro
+    depends_on:
+      - web
+
+  # ── Простой WSGI ──────────────────────────────────────────────
+  simple_wsgi:
+    build: .
+    volumes:
+      - .:/app
+    command: gunicorn simple_wsgi:application --bind 0.0.0.0:8081 --workers 2
 
 volumes:
   pg_data:
